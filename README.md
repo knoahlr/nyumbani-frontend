@@ -1,2 +1,4 @@
 # nyumbani-frontend
-frontend from Dad
+frontend from DadDad
+
+![Homepage](dist/assets/kejani_page.png)
