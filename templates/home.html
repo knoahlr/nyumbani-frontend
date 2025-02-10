@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen">
+    <!-- Top Bar -->
+    <div class="border-b">
+        <div class="container mx-auto flex items-center justify-between py-2 px-4">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="phone" class="h-4 w-4"></i>
+                    <span class="text-sm">1-800-NYUMBANI</span>
+                </div>
+                <a href="#" class="text-sm hover:underline">Support</a>
+            </div>
+            <a href="#" class="text-sm hover:underline">Login</a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <div class="container mx-auto flex items-center justify-between py-4 px-4">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600">NYUMBANI</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="#" class="font-medium hover:text-blue-600">SOLUTIONS</a>
+                    <a href="#" class="font-medium hover:text-blue-600">FEATURES</a>
+                    <a href="#" class="font-medium hover:text-blue-600">PRICING</a>
+                    <a href="#" class="font-medium hover:text-blue-600">RESOURCES</a>
+                    <a href="#" class="font-medium hover:text-blue-600">CONTACT</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    Request Demo
+                </button>
+                <button class="p-2 hover:bg-gray-100 rounded-md">
+                    <i data-lucide="search" class="h-5 w-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800">
+        <div class="container mx-auto grid md:grid-cols-2 gap-8 px-4 py-16">
+            <div class="flex flex-col justify-center text-white">
+                <div class="mb-6">
+                    <h2 class="text-sm font-semibold tracking-wide uppercase mb-4">
+                        SMART RENTAL MANAGEMENT PLATFORM
+                    </h2>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                        Transform Your Rental<br>Property Management
+                    </h1>
+                    <p class="text-lg opacity-90">
+                        Experience the future of property management with Nyumbani's intelligent platform. 
+                        Automate rent collections, access real-time analytics, and provide a seamless 
+                        experience for your tenants.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <button class="px-6 py-3 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition font-medium">
+                        Request Demo
+                    </button>
+                    <button class="px-6 py-3 border-2 border-white text-white rounded-md hover:bg-blue-700 transition font-medium">
+                        Watch Video
+                    </button>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center">
+                <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Live Dashboard Preview</h3>
+                    <div class="space-y-4">
+                        <div class="h-12 bg-gray-100 rounded animate-pulse"></div>
+                        <div class="h-12 bg-gray-100 rounded animate-pulse"></div>
+                        <div class="h-12 bg-gray-100 rounded animate-pulse"></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="h-20 bg-blue-50 rounded p-4">
+                                <div class="text-sm text-gray-600">Total Collected</div>
+                                <div class="text-xl font-bold text-blue-600">$24,500</div>
+                            </div>
+                            <div class="h-20 bg-blue-50 rounded p-4">
+                                <div class="text-sm text-gray-600">Success Rate</div>
+                                <div class="text-xl font-bold text-blue-600">98.5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Features Section -->
+    <section class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Powerful Features</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Discover how Nyumbani's comprehensive features can streamline your property management operations.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                {% for key, feature in features.items %}
+                <button
+                    data-feature='{{ feature|safe|escapejs }}'
+                    class="p-6 rounded-lg text-left transition bg-white hover:bg-blue-50"
+                >
+                    <i data-lucide="{% if key == 'collections' %}credit-card{% elif key == 'analytics' %}bar-chart-2{% else %}users{% endif %}" 
+                       class="feature-icon h-8 w-8 mb-4 text-blue-600"></i>
+                    <h3 class="text-xl font-semibold mb-2">{{ feature.title }}</h3>
+                    <p class="text-gray-600">{{ feature.description|truncatewords:10 }}</p>
+                </button>
+                {% endfor %}
+            </div>
+
+            <div id="feature-content" class="bg-white p-8 rounded-lg shadow-lg">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h2 class="text-3xl font-bold mb-6">Seamless Integration</h2>
+            <p class="text-gray-600 mb-8">
+                Nyumbani integrates with your existing property management software 
+                and accounting tools, making it easy to streamline your entire rental operation.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {% for i in "1234" %}
+                <div class="h-20 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <span class="text-gray-400">Integration Partner {{ i }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-blue-50 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Transform Your Property Management?</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+                Join thousands of property managers who have modernized their operations with Nyumbani.
+            </p>
+            <button class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium">
+                Get Started Today
+            </button>
+        </div>
+    </section>
+</div>
+{% endblock %}
