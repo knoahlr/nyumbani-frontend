@@ -9,6 +9,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn } = useAuth();
+  const API_BASE_URL = 'http://localhost:8000/api/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,14 +17,31 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      await signIn(email, password);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Failed to sign in. Please check your credentials.');
+        const response = await fetch('${API_BASE_URL}login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to sign in. Please check your credentials.');
+        }
+
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Store the token for authentication
+
+        navigate('/dashboard');
+    } catch (err){
+      if(err instanceof Error) {
+        setError(err.message || 'Something went wrong. Please try again.');
+      }
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
