@@ -9,7 +9,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn } = useAuth();
-  const API_BASE_URL = 'http://localhost:8000/api/';
+  const API_BASE_URL = 'http://localhost:8000/api';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +17,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-        const response = await fetch('${API_BASE_URL}login/', {
+        const response = await fetch(`${API_BASE_URL}/auth/login/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,9 +25,9 @@ export default function Login() {
             body: JSON.stringify({ email, password })
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to sign in. Please check your credentials.');
-        }
+        // if (!response.ok) {
+        //     throw new Error('Failed to sign in. Please check your credentials.');
+        // }
 
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store the token for authentication
