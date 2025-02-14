@@ -13,8 +13,8 @@ async function getCsrfToken(): Promise<string> {
 }
 
 async function retrieve_token() {
-  const response = await fetch("http://localhost:8000/auth-token/", {
-      method: "POST",
+  const response = await fetch("http://localhost:8000/api/auth-token/", {
+      method: "GET",
       headers: {
           "Content-Type": "application/json",
       },
@@ -42,16 +42,15 @@ export default function Login() {
     setError('');
     setIsLoading(true);
 
-    retrieve_token()
+    //retrieve_token()
 
     try {
         const csrfToken = await getCsrfToken();
-        const token = localStorage.getItem("access_token");
+        //const token = localStorage.getItem("access_token");
         const response = await fetch(`${API_BASE_URL}/login/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": `Token ${token}`,
                 "X-CSRFToken": csrfToken,
             },
             credentials: 'include',
@@ -59,9 +58,9 @@ export default function Login() {
             body: JSON.stringify({ email, password })
         });
 
-        // if (!response.ok) {
-        //     throw new Error('Failed to sign in. Please check your credentials.');
-        // }
+        if (!response.ok) {
+            throw new Error('Failed to sign in. Please check your credentials.');
+        }
 
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store the token for authentication
