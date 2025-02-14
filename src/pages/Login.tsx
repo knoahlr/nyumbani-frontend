@@ -2,6 +2,33 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+const API_BASE_URL = 'http://localhost:8000/api';
+
+async function getCsrfToken(): Promise<string> {
+  const response = await fetch(`${API_BASE_URL}/csrf/`, {
+      credentials: "include",  // Important to include cookies
+  });
+  const data = await response.json();
+  return data.csrfToken;
+}
+
+async function retrieve_token() {
+  const response = await fetch("http://localhost:8000/api/auth-token/", {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  });
+
+  if (!response.ok) {
+      throw new Error("Login failed");
+  }
+
+  const data = await response.json();
+  localStorage.setItem("access_token", data.token);  // ✅ Store token for future requests
+  return data;
+}
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,26 +36,31 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn } = useAuth();
-  const API_BASE_URL = 'http://localhost:8000/api';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
+    //retrieve_token()
+
     try {
+        const csrfToken = await getCsrfToken();
+        //const token = localStorage.getItem("access_token");
         const response = await fetch(`${API_BASE_URL}/login/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrfToken,
             },
             credentials: 'include',
+
             body: JSON.stringify({ email, password })
         });
 
-        // if (!response.ok) {
-        //     throw new Error('Failed to sign in. Please check your credentials.');
-        // }
+        if (!response.ok) {
+            throw new Error('Failed to sign in. Please check your credentials.');
+        }
 
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store the token for authentication
