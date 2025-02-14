@@ -33,7 +33,7 @@ export default function Login() {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store the token for authentication
 
-        navigate('/dashboard');
+        navigate('/');
     } catch (err){
       if(err instanceof Error) {
         setError(err.message || 'Something went wrong. Please try again.');
